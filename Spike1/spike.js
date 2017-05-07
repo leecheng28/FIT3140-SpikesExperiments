@@ -1,3 +1,12 @@
+/**
+ * FIT3140 - Assignment 4. Team 29. Spike1.
+ *
+ * spike.js: he first spike examines the execution time of decoding incoming message 
+ * by storing and receiving the code of each letter as a string.
+ *
+ * @author Li Cheng
+ */
+
 (function() {
     "use strict";
  
@@ -80,10 +89,17 @@
     	return executionTime;
     }
 
-    // computer average execution time over 3 tests
-    var numTests = 3, executionTimeArray = [];
+    // Run the tests
+    var numTests, executionTimeArray = [];
     var longestExecutionTime, shortestExecutionTime;
     var testcount;
+
+    if (process.argv.length != 3) {
+    	console.log("Please run the program with one argument: the number of tests you want to conduct.\n\t"
+    	+ "For example, Spike.js 3");
+    } else {
+    	numTests = process.argv[2];
+    }
 
     for (testcount = 0; testcount < numTests; testcount++) {
     	executionTimeArray.push(singleTestTime());
@@ -92,11 +108,14 @@
     let sumExecutionTime = executionTimeArray.reduce((pre, cur) => cur += pre);
     let averageExecutionTime = sumExecutionTime/executionTimeArray.length;
 
+    // computer shortest, longest execution time.
     executionTimeArray.sort();
     shortestExecutionTime = executionTimeArray[0];
     longestExecutionTime = executionTimeArray[executionTimeArray.length-1];
 
-    console.log("Printing the letters of " + numMotionData + " test arrays took " + averageExecutionTime + " ns.");
-    console.log("The longest execution time: ", longestExecutionTime + " ns.");
-    console.log("The shortest execution time: ", shortestExecutionTime + " ns.");
+    console.log("Printing the letters of " + numMotionData + " test arrays, \n" + 
+    "The average execution time: " + averageExecutionTime + " ns.");
+    console.log("The longest execution time: ", (numTests < 3 ? "not available." : longestExecutionTime+ " ns."));
+    console.log("The shortest execution time: ", (numTests < 3 ? "not available." : shortestExecutionTime + " ns."));
+
 })();
