@@ -49,7 +49,6 @@
 
     // generate 50,000 motion data in 'string' format, and store them in an array
     // return motionDataArray
-    var numMotionData = 50000;
     function generateMotionDataArray() {
     	var motionDataArray = [];
     	var count;
@@ -90,15 +89,17 @@
     }
 
     // Run the tests
-    var numTests, executionTimeArray = [];
+    var numTests, executionTimeArray = [];								var numMotionData;
     var longestExecutionTime, shortestExecutionTime;
     var testcount;
 
-    if (process.argv.length != 3) {
-    	console.log("Please run the program with one argument: the number of tests you want to conduct.\n\t"
-    	+ "For example, Spike.js 3");
+    if (process.argv.length != 4) {
+    	console.log("Please run the program with one argument: the number of tests you want to conduct, " +
+    	"the number of randomly-generated motion data you want to use.\n\t"
+    	+ "For example, Spike.js 3 100000");
     } else {
     	numTests = process.argv[2];
+    	numMotionData = process.argv[3];
     }
 
     for (testcount = 0; testcount < numTests; testcount++) {
