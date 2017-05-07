@@ -16,7 +16,7 @@ Type the following to run two spikes separately.
 ```bash
 node Spike.js
 ```
-The morse code letter will be printed out if there is a match between randomly generated data, null otherwise. The average execution time, longest exection time, shortest exection time of a number of tests will be printed out too.
+The morse code letter will be printed out if there is a match between randomly generated data and a pre-stored morse code table array, null otherwise. The average execution time, longest exection time, shortest exection time of a number of tests will be printed out too.
 
 ## Who do I talk to? ##
 
