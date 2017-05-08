@@ -64,10 +64,11 @@
     	var mctacount;
     	for (mctacount = 0; mctacount < morseCodeTableArray.length; mctacount++) {
     		if (data == morseCodeTableArray[mctacount].code) {
-    			return morseCodeTableArray[mctacount].letter;
+    			console.log(morseCodeTableArray[mctacount].letter);
+    			return;
     		} 
     	}
-    	return null;
+    	console.log("null");
     }
 
     // for each item in myData, loop through the morse code table and print out the 
@@ -78,7 +79,7 @@
     	var startTime = process.hrtime();
 
     	for (mdcount = 0; mdcount < numMotionData; mdcount++) {
-    		console.log(findMorseCode(myData[mdcount]));
+    		findMorseCode(myData[mdcount]);
    	 	}
 
     	// calculate the execution time
@@ -89,34 +90,35 @@
     }
 
     // Run the tests
-    var numTests, executionTimeArray = [];								var numMotionData;
-    var longestExecutionTime, shortestExecutionTime;
-    var testcount;
+    var numTests;
+    var numMotionData;
 
     if (process.argv.length != 4) {
-    	console.log("Please run the program with one argument: the number of tests you want to conduct, " +
-    	"the number of randomly-generated motion data you want to use.\n\t"
-    	+ "For example, Spike.js 3 100000");
+    	console.log("Usage: spike.js <num_repeats> <num_motions>");
+    	return;
     } else {
-    	numTests = process.argv[2];
-    	numMotionData = process.argv[3];
+    	numTests = parseInt(process.argv[2]);
+    	numMotionData = parseInt(process.argv[3]);
+    }
+    
+    if (numTests <= 0) {
+    	console.log("Num repeats must be at least one.");
     }
 
-    for (testcount = 0; testcount < numTests; testcount++) {
-    	executionTimeArray.push(singleTestTime());
+    var longestExecutionTime, shortestExecutionTime, sumExecutionTime;
+    sumExecutionTime = longestExecutionTime = shortestExecutionTime = singleTestTime();
+    for (var testcount = 0; testcount < numTests-1; testcount++) {
+    	var sample = singleTestTime();
+		shortestExecutionTime = Math.min(sample, shortestExecutionTime);
+		longestExecutionTime = Math.max(sample, longestExecutionTime);
+		sumExecutionTime += sample;
     }
-
-    let sumExecutionTime = executionTimeArray.reduce((pre, cur) => cur += pre);
-    let averageExecutionTime = sumExecutionTime/executionTimeArray.length;
-
-    // computer shortest, longest execution time.
-    executionTimeArray.sort();
-    shortestExecutionTime = executionTimeArray[0];
-    longestExecutionTime = executionTimeArray[executionTimeArray.length-1];
-
-    console.log("Printing the letters of " + numMotionData + " test arrays, \n" + 
-    "The average execution time: " + averageExecutionTime + " ns.");
-    console.log("The longest execution time: ", (numTests < 3 ? "not available." : longestExecutionTime+ " ns."));
-    console.log("The shortest execution time: ", (numTests < 3 ? "not available." : shortestExecutionTime + " ns."));
+    
+    let averageExecutionTime = sumExecutionTime/numTests;
+    console.log("Number of repeats: " + numTests);
+    console.log("Motion data array size: " + numMotionData);
+    console.log("Average execution time: " + averageExecutionTime + " ns.");
+    console.log("Longest execution time: " + longestExecutionTime + " ns.");
+    console.log("Shortest execution time: " + shortestExecutionTime + " ns.");
 
 })();

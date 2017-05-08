@@ -64,21 +64,45 @@
 	}
 
 	// Runs and times n checks.
-	function runTest(n) {
+	function singleTestTime(n) {
 		var myData = generateMotionData(n);
-		
 		var startTime = process.hrtime();
 		for (var i = 0; i < n; i++) {
 			printLetter(myData[i]);
 		}
 		var delta = process.hrtime(startTime);
-		console.log("Printing the letters of " + n + " test arrays took " + (delta[0] * 1e9 + delta[1]) + " ns.");
+		return delta[0] * 1e9 + delta[1];
 	}
-	
-	// Run the test
-	if (process.argv.length !== 3) {
-		console.log("Please run spike.js with the number of items to generate as the first command line argument.");
-	} else {
-		runTest(parseInt(process.argv[2]));
-	}
+
+    // Run the tests
+    var numTests;
+    var numMotionData;
+
+    if (process.argv.length != 4) {
+    	console.log("Usage: spike.js <num_repeats> <num_motions>");
+    	return;
+    } else {
+    	numTests = parseInt(process.argv[2]);
+    	numMotionData = parseInt(process.argv[3]);
+    }
+    
+    if (numTests <= 0) {
+    	console.log("Num repeats must be at least one.");
+    }
+
+    var longestExecutionTime, shortestExecutionTime, sumExecutionTime;
+    sumExecutionTime = longestExecutionTime = shortestExecutionTime = singleTestTime(numMotionData);
+    for (var testcount = 0; testcount < numTests-1; testcount++) {
+    	var sample = singleTestTime(numMotionData);
+		shortestExecutionTime = Math.min(sample, shortestExecutionTime);
+		longestExecutionTime = Math.max(sample, longestExecutionTime);
+		sumExecutionTime += sample;
+    }
+    
+    let averageExecutionTime = sumExecutionTime/numTests;
+    console.log("Number of repeats: " + numTests);
+    console.log("Motion data array size: " + numMotionData);
+    console.log("Average execution time: " + averageExecutionTime + " ns.");
+    console.log("Longest execution time: " + longestExecutionTime + " ns.");
+    console.log("Shortest execution time: " + shortestExecutionTime + " ns.");
 })();
