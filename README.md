@@ -18,7 +18,6 @@ node Spike.js
 ```
 The morse code letter will be printed out if there is a match between randomly generated data and a pre-stored morse code table array, null otherwise. The average execution time, longest exection time, shortest exection time of a number of tests will be printed out too.
 
-## Who do I talk to? ##
-
-* Matthew at `mgrea2@student.monash.edu`
-* Li at `lche206@student.monash.edu`
+# Who do I talk to? #
+Further issues, please contact
+* Li at `cl745524836ATgmail.com`
